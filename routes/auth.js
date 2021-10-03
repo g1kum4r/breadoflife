@@ -14,7 +14,7 @@ router.post('/login', (req, res, next) => {
             res.json(err);
             // res.json({status: 'invalid password'});
         } else if (doc) {
-            if(crypt.compare(req.body.password, doc.password)) {
+            if(req.body.password === doc.password) {
                 res.json({
                     token: jwt.generateToken({
                         _id: doc._id,
@@ -35,10 +35,10 @@ router.post('/login', (req, res, next) => {
 function registerUser(email, password, role, res){
     console.log('registerUser');
     try {
-        let hashPassword = crypt.encrypt(password);
+        // let hashPassword = crypt.encrypt(password);
         let authUser = {
             email: email,
-            password: hashPassword,
+            password: password,
             role: role
         };
         AuthUser.create(authUser, (err, doc) => {

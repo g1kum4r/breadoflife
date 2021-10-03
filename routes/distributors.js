@@ -16,12 +16,13 @@ function getDistributorList(userId, res){
     .where({user: userId}).then(v => {
       res.json(v);
   })
-  // AuthUser.findById(id, (err, distributors) => {
-  //   res.json(distributors);
-  // })
-  // .populate('distributions')
-  // .sort({first_name: 'asc', last_name: 'asc'});
 }
+
+async function create(obj){
+  return await Distributor.create(obj);
+}
+
+
 
 /* GET fetch distributors. */
 router.get('/', function(req, res) {
