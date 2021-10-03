@@ -1,3 +1,4 @@
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
 var mongoose = require('mongoose');
@@ -8,10 +9,11 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var distributorsRouter = require('./routes/distributors');
+var authRouter = require('./routes/auth');
 
 var app = express();
 
-mongoose.connect('mongodb://g1kumar:g1mongodb@cluster0-shard-00-00.w0apc.mongodb.net:27017,cluster0-shard-00-01.w0apc.mongodb.net:27017,cluster0-shard-00-02.w0apc.mongodb.net:27017/breadoflife?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority');
+mongoose.connect(process.env.MONGODB_URL);
 
 // on mongodb connection
 mongoose.connection.on('connected', () => {
@@ -33,6 +35,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/distributions', distributorsRouter);
 
